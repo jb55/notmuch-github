@@ -1,2 +1,3 @@
 
 * TODO notmuch-repo-from-message: customizable location
+* TODO replace git-pr-event with elisp
