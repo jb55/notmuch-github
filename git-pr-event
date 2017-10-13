@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -e
+
+access_token=$GITHUB_ACCESS_TOKEN
+
+api() {
+  curl -sL -H "Authorization: token $access_token" "$@"
+}
+
+usage() {
+    printf "usage: git-pr-event <owner>/<repo> <pr> <body> <approve|reject|comment>\n" >&2
+    exit 1
+}
+
+getevent() {
+    case "$1" in
+        "approve")
+            printf "APPROVE\n"
+            ;;
+        "reject")
+            printf "REQUEST_CHANGES\n"
+            ;;
+        "comment")
+            printf "COMMENT\n"
+            ;;
+        *)
+            printf "invalid event '%s', choose approve, reject or comment\n" "$1" >&2
+            exit 1
+            ;;
+    esac
+}
+
+project="$1"
+pr="$2"
+body="$3"
+event="${4:-approve}"
+
+if [ -z $project ] || [ -z $pr ] || [ -z $body ]; then
+    usage
+fi
+
+base_url='https://api.github.com/repos/'"$project"
+
+event=$(getevent $event)
+
+review_id=$(api -X POST -d'{"body":"'"$body"'"}' "$base_url/pulls/$pr/reviews" | jq -r .id)
+
+api -X POST -d '{"body":"'"$body"'", "event":"'"$event"'"}' \
+  "$base_url/pulls/$pr/reviews/$review_id/events" | jq -r '._links.html.href'
+
