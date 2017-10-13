@@ -1,4 +1,7 @@
-(defun km/notmuch-github-pr-number ()
+;; Authors: Kyle Meyer <kyle@kyleam.com>
+;;          William Casarin <jb55@jb55.com>
+
+(defun notmuch-github-pr-number ()
   "Return the PR number for this message."
   (let ((subject (notmuch-show-get-subject)))
     (or (and (string-match "(#\\([0-9]+\\))$" subject 0)
@@ -9,7 +12,7 @@
 ;; on the current notmuch message.  Or, if you use projectile and
 ;; don't mind getting queried each time, it could just read a project
 ;; from `projectile-relevant-known-projects'.
-(defun km/notmuch-repo-from-message ()
+(defun notmuch-repo-from-message ()
   "Return the repository that this message is associated with."
   (let ((subject (notmuch-show-get-subject))
         (repo))
@@ -19,7 +22,7 @@
                       (concat "~/dev/github/" repo))))
         (user-error "Could not determine repo"))))
 
-(defun km/notmuch-visit-pr-in-magit (&optional dont-fetch)
+(defun notmuch-visit-pr-in-magit (&optional dont-fetch)
   "Show the Magit log for this message's PR.
 If DONT-FETCH is non-nil, do not fetch first."
   (interactive "P")
