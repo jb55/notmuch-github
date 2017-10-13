@@ -1,12 +1,9 @@
 (defun km/notmuch-github-pr-number ()
   "Return the PR number for this message."
-  (let (pr)
-    (with-current-notmuch-show-message
-     (goto-char (point-min))
-     (if (re-search-forward "https://github\\.com/.*/pull/\\([0-9]+\\)" nil t)
-         (setq pr (match-string-no-properties 1))
-       (user-error "Could not find PR number")))
-    pr))
+  (let ((subject (notmuch-show-get-subject)))
+    (or (and (string-match "(#\\([0-9]+\\))$" subject 0)
+             (match-string-no-properties 1 subject))
+        (user-error "Could not find PR number"))))
 
 ;; This function could be anything that figures out the project based
 ;; on the current notmuch message.  Or, if you use projectile and
