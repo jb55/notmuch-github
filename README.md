@@ -22,7 +22,8 @@ passing a more explicit refspec to the fetch call.
 
 ## notmuch-review-pr
 
-
 approve/reject/comment on a PR when viewing a GitHub PR email
 
-Relys on [this](./git-pr-event) cruddy script that needs to be replaced with elisp
+### Crud
+
+* Relys on [this](./git-pr-event) cruddy script that needs to be replaced with elisp
