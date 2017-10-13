@@ -21,15 +21,31 @@
     (or (and subject
              (or (and (string-match "\\([^\]]+\\)" subject 1)
                       (setq repo (match-string-no-properties 1 subject))
-                      (concat "~/dev/github/" repo))))
+                      repo)))
         (user-error "Could not determine repo"))))
+
+(defun notmuch-repo-dir-from-message ()
+  (let ((repo (notmuch-repo-from-message)))
+    (concat "~/dev/github/" repo)))
+
+(defun notmuch-review-pr ()
+  (interactive)
+  (let* ((pr (notmuch-github-pr-number))
+         (repo (notmuch-repo-from-message))
+         (body (read-string "Enter message: "))
+         (actions '(("approve" . "approve")
+                    ("reject" . "reject")
+                    ("comment" . "comment")))
+         (action (completing-read "Action: " actions))
+         (action (cdr (assoc action actions))))
+    (call-process "git-pr-event" nil nil nil repo pr body action)))
 
 (defun notmuch-visit-pr-in-magit (&optional dont-fetch)
   "Show the Magit log for this message's PR.
 If DONT-FETCH is non-nil, do not fetch first."
   (interactive "P")
   (let* ((pr (notmuch-github-pr-number))
-         (repo (notmuch-repo-from-message))
+         (repo (notmuch-repo-dir-from-message))
          (default-directory repo))
     ;; "origin" is hard-coded below, but it could of course be
     ;; anything.  You could also have an alist that maps repo ->
