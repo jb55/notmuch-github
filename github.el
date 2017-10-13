@@ -28,8 +28,8 @@
   "Show the Magit log for this message's PR.
 If DONT-FETCH is non-nil, do not fetch first."
   (interactive "P")
-  (let* ((pr (km/notmuch-github-pr-number))
-         (repo (km/notmuch-repo-from-message))
+  (let* ((pr (notmuch-github-pr-number))
+         (repo (notmuch-repo-from-message))
          (default-directory repo))
     ;; "origin" is hard-coded below, but it could of course be
     ;; anything.  You could also have an alist that maps repo ->
