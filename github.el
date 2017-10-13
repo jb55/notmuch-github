@@ -36,6 +36,7 @@ If DONT-FETCH is non-nil, do not fetch first."
     ;; This assumes that you've added
     ;;
     ;;    fetch = +refs/pull/*/head:refs/pull/origin/*
+    ;;    fetch = +refs/pull/*/merge:refs/merge/origin/*
     ;;
     ;; to origin's in ".git/config".  You could drop that assumption
     ;; passing a more explicit refspec to the fetch call.
