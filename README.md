@@ -8,7 +8,8 @@ A bunch of helpers for working with notmuch and GitHub
 notmuch-visit-pr-in-magit
 -------------------------
 
-Use in notmuch-show when viewing a GitHub email
+View PR commits in magit from a GitHub pull request email. Requires a somewhat
+special setup that could be more customizable
 
 
 notmuch-review-pr
