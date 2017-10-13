@@ -1,5 +1,7 @@
 ;; Authors: Kyle Meyer <kyle@kyleam.com>
 ;;          William Casarin <jb55@jb55.com>
+;;
+;; original thread @ notmuch mailing list: id:87d16jtsdj.fsf@kyleam.com
 
 (defun notmuch-github-pr-number ()
   "Return the PR number for this message."
