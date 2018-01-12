@@ -61,4 +61,4 @@ If DONT-FETCH is non-nil, do not fetch first."
     (unless dont-fetch
       (magit-call-git "fetch" "origin"))
     (magit-log (list (concat "refs/merge/origin/" pr "^..refs/pull/origin/" pr))
-               (list "-p"))))
+               (list "-p" "--date=local" "--reverse"))))
