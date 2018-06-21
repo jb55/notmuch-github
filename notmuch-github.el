@@ -19,7 +19,7 @@
   (let ((subject (notmuch-show-get-subject))
         (repo))
     (or (and subject
-             (or (and (string-match ".*\\[\\([^\]]+\\)" subject 0)
+             (or (and (string-match "\\[\\([^\]]+\\)" subject 0)
                       (setq repo (match-string-no-properties 1 subject))
                       repo)))
         (user-error "Could not determine repo"))))
