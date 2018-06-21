@@ -59,6 +59,6 @@ If DONT-FETCH is non-nil, do not fetch first."
     ;; to origin's in ".git/config".  You could drop that assumption
     ;; passing a more explicit refspec to the fetch call.
     (unless dont-fetch
-      (magit-call-git "fetch" "origin"))
+      (magit-run-git "fetch" "origin"))
     (magit-log (list (concat "refs/merge/origin/" pr "^..refs/pull/origin/" pr))
                (list "-p" "--date=local" "--reverse"))))
