@@ -3,6 +3,24 @@
 
 A bunch of helpers for working with notmuch and GitHub
 
+## Tagging
+
+Here are some ways to tag github pull request emails
+
+```bash
+notmuch tag +github from:github.com and tag:inbox
+
+notmuch tag +pr '"You can view, comment on, or merge this pull request online at"' and tag:github and not tag:pr and tag:inbox and not tag:issue
+
+# tag all messages in the thread that have a pr tag
+notmuch tag +pr $(notmuch search --output=threads tag:pr and tag:inbox)
+
+# this seems to be a semi reliable way to find github merge emails
+notmuch tag +merged Merged and event from:notifications@github.com and not tag:merged and tag:inbox and tag:pr
+
+# tag the entire pr thread as merged
+notmuch tag +merged $(notmuch search --output=threads tag:merged and tag:inbox)
+```
 
 ## notmuch-visit-pr-in-magit
 
