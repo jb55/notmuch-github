@@ -3,6 +3,7 @@
 ;;
 ;; original thread @ notmuch mailing list: id:87d16jtsdj.fsf@kyleam.com
 
+
 (defun notmuch-github-pr-number ()
   "Return the PR number for this message."
   (let ((subject (notmuch-show-get-subject)))
@@ -44,6 +45,7 @@
   "Show the Magit log for this message's PR.
 If DONT-FETCH is non-nil, do not fetch first."
   (interactive "P")
+  (require 'magit)
   (let* ((pr (notmuch-github-pr-number))
          (repo (notmuch-repo-dir-from-message))
          (default-directory repo))
