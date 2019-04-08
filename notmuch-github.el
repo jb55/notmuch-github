@@ -41,26 +41,33 @@
          (action (cdr (assoc action actions))))
     (call-process "git-pr-event" nil nil nil repo pr body action)))
 
-(defun notmuch-visit-pr-in-magit (&optional dont-fetch)
+(defun visit-pr-in-magit (repo-dir pr &optional dont-fetch)
+  ;; "origin" is hard-coded below, but it could of course be
+  ;; anything.  You could also have an alist that maps repo ->
+  ;; remote.
+  ;;
+  ;; This assumes that you've added
+  ;;
+  ;;    fetch = +refs/pull/*/head:refs/pull/origin/*
+  ;;    fetch = +refs/pull/*/merge:refs/merge/origin/*
+  ;;
+  ;; to origin's in ".git/config".  You could drop that assumption
+  ;; passing a more explicit refspec to the fetch call.
+  (interactive "P")
+  (let ((default-directory repo-dir))
+    (unless dont-fetch
+      (magit-run-git "fetch" "origin"))
+    (magit-log (list (concat "refs/merge/origin/" pr "^..refs/pull/origin/" pr))
+               (list "++header" "-p" "--date=local" "--reverse")))
+  )
+
+
+(defun notmuch-visit-pr-in-magit (&optional fetch)
   "Show the Magit log for this message's PR.
 If DONT-FETCH is non-nil, do not fetch first."
   (interactive "P")
   (require 'magit)
   (let* ((pr (notmuch-github-pr-number))
          (repo (notmuch-repo-dir-from-message))
-         (default-directory repo))
-    ;; "origin" is hard-coded below, but it could of course be
-    ;; anything.  You could also have an alist that maps repo ->
-    ;; remote.
-    ;;
-    ;; This assumes that you've added
-    ;;
-    ;;    fetch = +refs/pull/*/head:refs/pull/origin/*
-    ;;    fetch = +refs/pull/*/merge:refs/merge/origin/*
-    ;;
-    ;; to origin's in ".git/config".  You could drop that assumption
-    ;; passing a more explicit refspec to the fetch call.
-    (unless dont-fetch
-      (magit-run-git "fetch" "origin"))
-    (magit-log (list (concat "refs/merge/origin/" pr "^..refs/pull/origin/" pr))
-               (list "-p" "--date=local" "--reverse"))))
+         )
+    (visit-pr-in-magit repo pr (not fetch))))
