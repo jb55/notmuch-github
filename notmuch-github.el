@@ -57,8 +57,8 @@
   (let ((default-directory repo-dir))
     (unless dont-fetch
       (magit-run-git "fetch" "origin"))
-    (magit-log (list (concat "refs/merge/origin/" pr "^..refs/pull/origin/" pr))
-               (list "++header" "-p" "--date=local" "--reverse")))
+    (magit-log-other (list (concat "refs/merge/origin/" pr "^..refs/pull/origin/" pr))
+                     (list "++header" "-p" "--date=local" "--reverse")))
   )
 
 
